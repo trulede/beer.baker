@@ -4,6 +4,7 @@
 
 
 #include <stdbool.h>
+#include <stdint.h>
 
 
 #define SSID_MAX_LENGTH 32
@@ -12,7 +13,6 @@
 #define PLUG_PASS_LENGTH 64
 
 
-/* config.cpp */
 typedef struct {
 	bool autoStart;
 	struct {
@@ -21,17 +21,29 @@ typedef struct {
 	} wifi;
 	struct {
 		char ip[PLUG_IP_LENGTH];
-		long autoOff; // 0 to disable
+		uint32_t autoOff; // 0 to disable
 	} plug;
-} baker_config_t;
+} BakerConfig_t;
 
-extern baker_config_t baker_config;
+extern BakerConfig_t bakerConfig;
+
+
+typedef struct {
+    struct {
+        bool switchState;
+    } plug;
+    struct {
+        uint32_t tempKelvin;
+        int32_t tempC;
+    } ds;
+} BakerStatus_t;
+
+//extern BakerStatus_t bakerStatus;
 
 
 /* command.cpp */
 extern void setupCommands(void);
 extern void runCommands(void);
-
 
 /* config.cpp */
 extern void loadConfig(void);
@@ -39,9 +51,8 @@ extern void saveConfig(void);
 extern void printConfig(void);
 extern void setConfig(String name, String value);
 
-
 /* network.cpp */
-//extern void startNetwork(config_t* c);
-
+extern void startNetwork(void);
+extern void stopNetwork(void);
 
 #endif

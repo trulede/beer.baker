@@ -40,10 +40,6 @@ void configSetCommand(cmd* c) {
 
 	setConfig(cmd.getArgument("name").getValue(), cmd.getArgument("value").getValue());
 	printConfig();
-	
-//     if (networkChanged) {
-//         startNetwork();
-//     }
 }
 
 
@@ -57,6 +53,17 @@ void restartCommand(cmd* c) {
     Command cmd(c);
     Serial.println("restarting controller ...");
 	ESP.restart();
+}
+
+
+void statusCommand(cmd* c) {
+    Command cmd(c);
+
+    Serial.println("");
+	Serial.println("Status");
+	Serial.println("------");
+    startNetwork();
+    stopNetwork();
 }
 
 
@@ -99,7 +106,7 @@ void setupCommands(void) {
 
     cmdStart = cli.addCommand("start", nopCommand);
     cmdStop = cli.addCommand("stop", nopCommand);
-    cmdStatus = cli.addCommand("status", nopCommand);
+    cmdStatus = cli.addCommand("status", statusCommand);
 
 	cmdHelp = cli.addCommand("restart", restartCommand);
     cmdHelp.setDescription("restart the controller");
@@ -116,7 +123,3 @@ void runCommands(void) {
         cli.parse(input);
     }
 }
-
-
-
-
