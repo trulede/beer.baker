@@ -8,7 +8,6 @@
 #define BAKER_CONFIG "bakerConfig"
 
 
-BakerConfig_t bakerConfig;
 Preferences prefs;
 
 

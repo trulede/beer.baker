@@ -1,6 +1,9 @@
 
-// Include Library
 #include "baker.h"
+
+
+BakerConfig_t bakerConfig;
+BakerStatus_t bakerStatus;
 
 
 void setup() {

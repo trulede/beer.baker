@@ -23,6 +23,9 @@ typedef struct {
 		char ip[PLUG_IP_LENGTH];
 		uint32_t autoOff; // 0 to disable
 	} plug;
+    struct {
+        float offsetC; // temperature (for algo) = tempC + offsetC
+    } ds;
 } BakerConfig_t;
 
 extern BakerConfig_t bakerConfig;
@@ -30,15 +33,21 @@ extern BakerConfig_t bakerConfig;
 
 typedef struct {
     struct {
-        bool switchState;
+        struct {
+            bool state;
+            float voltage;
+            float current;
+            float apower;
+            float aenergyTotal;
+            float tempC;
+        } switch0;
     } plug;
     struct {
-        uint32_t tempKelvin;
-        int32_t tempC;
+        float tempC;
     } ds;
 } BakerStatus_t;
 
-//extern BakerStatus_t bakerStatus;
+extern BakerStatus_t bakerStatus;
 
 
 /* command.cpp */
@@ -54,5 +63,12 @@ extern void setConfig(String name, String value);
 /* network.cpp */
 extern void startNetwork(void);
 extern void stopNetwork(void);
+
+/* plugs.cpp */
+extern void statusPlugS(void);
+extern void setPlugS(bool state);
+
+/* sensor.cpp */
+extern void readSensorTemperature(void);
 
 #endif
