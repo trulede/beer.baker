@@ -34,7 +34,7 @@ void saveConfig(void) {
 
 
 void printConfig(void) {
-	Serial.println("");
+	Serial.println();
 	Serial.println("Config");
 	Serial.println("------");
 	Serial.printf("auto-start = %d\n", bakerConfig.autoStart);
@@ -42,6 +42,7 @@ void printConfig(void) {
 	Serial.printf("wifi-pass = %s\n", bakerConfig.wifi.password);
 	Serial.printf("plug-ip = %s\n", bakerConfig.plug.ip);
 	Serial.printf("plug-auto-off = %d\n", bakerConfig.plug.autoOff);
+	Serial.printf("ds-offset = %f\n", bakerConfig.ds.offsetC);
 }
 
 
@@ -62,5 +63,7 @@ void setConfig(String name, String value) {
 	} else if (name == "plug-auto-off") {
 		long v = value.toInt();
 		if (v >= 0) bakerConfig.plug.autoOff = v;
-	}
+	} else if (name =="ds-offset") {
+        bakerConfig.ds.offsetC = value.toFloat();
+    }
 }

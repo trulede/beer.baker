@@ -18,6 +18,7 @@ Command cmdStop;
 Command cmdStatus;
 Command cmdPlugOn;
 Command cmdPlugOff;
+Command cmdSample;
 Command cmdRestart;
 
 
@@ -74,6 +75,15 @@ static void printStatus(void) {
 }
 
 
+static void printSample(void) {
+    Serial.println("");
+	Serial.println("Sample");
+	Serial.println("------");
+    Serial.println("ds18b20:");
+    Serial.printf("  temperature C = %f (sensor value: %f)\n", (bakerStatus.ds.tempC + bakerConfig.ds.offsetC), bakerStatus.ds.tempC);
+}
+
+
 void statusCommand(cmd* c) {
     Command cmd(c);
 
@@ -108,6 +118,14 @@ void plugOffCommand(cmd* c) {
 }
 
 
+void sampleCommand(cmd* c) {
+    Command cmd(c);
+    
+    readSensorTemperature();
+    printSample();
+}
+
+
 void nopCommand(cmd* c) {
     Command cmd(c);
     Serial.println("Not implemented: " + cmd.getName());
@@ -133,7 +151,7 @@ void setupCommands(void) {
     cmdHelp = cli.addCommand("help", helpCommand);
     cmdHelp.setDescription("print help");
 
-    cmdConfigPrint = cli.addCommand("config-print", configPrintCommand);
+    cmdConfigPrint = cli.addCommand("config", configPrintCommand);
     cmdConfigPrint.setDescription("print configuration");
 
     cmdConfigSet = cli.addCommand("config-set", configSetCommand);
@@ -151,6 +169,8 @@ void setupCommands(void) {
 
     cmdPlugOn = cli.addCommand("on", plugOnCommand);
     cmdPlugOff = cli.addCommand("off", plugOffCommand);
+
+    cmdSample = cli.addCommand("sample", sampleCommand);
 
 	cmdHelp = cli.addCommand("restart", restartCommand);
     cmdHelp.setDescription("restart the controller");
